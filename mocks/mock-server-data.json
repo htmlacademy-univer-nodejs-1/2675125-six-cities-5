@@ -1,0 +1,113 @@
+{
+    "api": {
+      "titles": [
+        "title1",
+        "title2",
+        "title3",
+        "title4",
+        "title5",
+        "title6",
+        "title7",
+        "title8",
+        "title9",
+        "title10"
+      ],
+      "descriptions": [
+        "Very very good offer description 1",
+        "Very very good offer description 2",
+        "Very very good offer description 3",
+        "Very very good offer description 4",
+        "Very very good offer description 5",
+        "Very very good offer description 6",
+        "Very very good offer description 7",
+        "Very very good offer description 8",
+        "Very very good offer description 9",
+        "Very very good offer description 10"
+      ],
+      "cities": [
+        "Paris",
+        "Cologne",
+        "Brussels",
+        "Amsterdam",
+        "Hamburg",
+        "Dusseldorf"
+      ],
+      "images": [
+        "photo1.jpg",
+        "photo2.jpg",
+        "photo3.jpg",
+        "photo4.jpg",
+        "photo5.jpg",
+        "photo6.jpg",
+        "photo7.jpg",
+        "photo8.jpg",
+        "photo9.jpg",
+        "photo10.jpg"
+      ],
+      "types": [
+        "apartment",
+        "house",
+        "room",
+        "hotel"
+      ],
+      "features": [
+        "Breakfast",
+        "Air conditioning",
+        "Laptop friendly workspace",
+        "Baby seat",
+        "Washer",
+        "Towels",
+        "Fridge"
+      ],
+      "userNames": [
+        "name1",
+        "name2",
+        "name3",
+        "name4",
+        "name5",
+        "name6",
+        "name7",
+        "name8",
+        "name9",
+        "name10"
+      ],
+      "userEmails": [
+        "email1@example.com",
+        "email2@example.com",
+        "email3@example.com",
+        "email4@example.com",
+        "email5@example.com",
+        "email6@example.com",
+        "email7@example.com",
+        "email8@example.com",
+        "email9@example.com",
+        "email10@example.com"
+      ],
+      "userAvatars": [
+        "avatar1.jpg",
+        "avatar2.jpg",
+        "avatar3.jpg",
+        "avatar4.jpg",
+        "avatar5.jpg",
+        "avatar6.jpg",
+        "avatar7.jpg",
+        "avatar8.jpg",
+        "avatar9.jpg",
+        "avatar10.jpg",
+        "avatar11.jpg",
+        "avatar12.jpg"
+      ],
+      "userPasswords": [
+        "password1",
+        "password2",
+        "password3",
+        "password4",
+        "password5",
+        "password6",
+        "password7",
+        "password8",
+        "password9",
+        "password10"
+      ]
+    }
+}

@@ -15,6 +15,7 @@
     "importHelpers": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
