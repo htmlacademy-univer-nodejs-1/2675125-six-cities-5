@@ -46,6 +46,8 @@
     "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
     "dotenv": "^17.2.3",
+    "@typegoose/typegoose": "^11.6.0",
+    "mongoose": "^7.6.0",
     "pino": "^10.1.0",
     "reflect-metadata": "^0.2.2"
   }
