@@ -1,4 +1,4 @@
-import {Location} from './location.enum';
+import {Location} from './location.type';
 import {City} from './city.type.js';
 import {User} from './user.type';
 import {OfferType} from './offer-type.enum';
