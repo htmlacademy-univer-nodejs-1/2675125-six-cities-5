@@ -1,0 +1,416 @@
+openapi: 3.0.3
+
+info:
+  title: Six Cities API
+  description: API проекта "Шесть городов"
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+
+tags:
+  - name: Offers
+    description: Предложения по аренде
+  - name: Comments
+    description: Комментарии к предложениям
+  - name: Users
+    description: Пользователи
+  - name: Auth
+    description: Аутентификация и авторизация
+  - name: Favorites
+    description: Избранные предложения
+
+paths:
+  /offers:
+    get:
+      tags: [ Offers ]
+      summary: Получение списка предложений по аренде
+      responses:
+        '200':
+          description: Список предложений по аренде
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferSimple'
+
+    post:
+      tags: [ Offers ]
+      summary: Создание нового предложения по аренде
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        description: Данные нового предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      responses:
+        '201':
+          description: Предложение успешно создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '400':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+
+  /offers/{offerId}:
+    parameters:
+      - in: path
+        name: offerId
+        required: true
+        description: id предложения
+        schema:
+          type: string
+
+    get:
+      tags: [ Offers ]
+      summary: Получение детальной информации о предложении
+      responses:
+        '200':
+          description: Детальная информация о предложении
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '404':
+          description: Предложение не найдено
+
+    put:
+      tags: [ Offers ]
+      summary: Редактирование предложения по аренде
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        description: Обновлённые данные предложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      responses:
+        '200':
+          description: Предложение обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '403':
+          description: Нет прав
+        '404':
+          description: Предложение не найдено
+
+    delete:
+      tags: [ Offers ]
+      summary: Удаление предложения по аренде
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Предложение удалено
+        '403':
+          description: Нет прав
+
+  /offers/{offerId}/comments:
+    get:
+      tags: [ Comments ]
+      summary: Получение списка комментариев
+      responses:
+        '200':
+          description: Список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+    post:
+      tags: [ Comments ]
+      summary: Добавление комментария
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        description: Данные комментария
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Комментарий добавлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+
+  /users:
+    post:
+      tags: [ Users ]
+      summary: Регистрация нового пользователя
+      description: Создаёт нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Пользователь зарегистрирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Ошибка валидации
+
+  /auth/login:
+    post:
+      tags: [ Auth ]
+      summary: Вход пользователя в систему
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '401':
+          description: Неверный логин или пароль
+
+  /auth/logout:
+    post:
+      tags: [ Auth ]
+      summary: Выход пользователя из системы
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Сессия завершена
+
+  /auth/status:
+    get:
+      tags: [ Auth ]
+      summary: Проверка состояния пользователя
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Пользователь авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Пользователь не авторизован
+
+  /premium/{city}:
+    get:
+      tags: [ Offers ]
+      summary: Получение премиальных предложений для города
+      parameters:
+        - in: path
+          name: city
+          required: true
+          schema:
+            $ref: '#/components/schemas/City'
+      responses:
+        '200':
+          description: Премиальные предложения
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferSimple'
+
+  /favorites:
+    get:
+      tags: [ Favorites ]
+      summary: Получение списка избранных предложений
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Избранные предложения
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferSimple'
+
+  /favorites/{offerId}:
+    post:
+      tags: [ Favorites ]
+      summary: Добавление предложения в избранное
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Предложение добавлено в избранное
+
+    delete:
+      tags: [ Favorites ]
+      summary: Удаление предложения из избранного
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Предложение удалено из избранного
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      required: [ name, email, password, type ]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 15
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+          maxLength: 12
+        avatarUrl:
+          type: string
+          nullable: true
+        type:
+          type: string
+          enum: [ default, pro ]
+
+    OfferSimple:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [ 'apartment', 'house', 'room', 'hotel' ]
+        price:
+          type: number
+        city:
+          $ref: '#/components/schemas/City'
+        previewImage:
+          type: string
+        isPremium:
+          type: boolean
+        isFavorite:
+          type: boolean
+        rating:
+          type: number
+        commentsCount:
+          type: integer
+        createdDate:
+          type: string
+          format: date-time
+
+    Offer:
+      allOf:
+        - $ref: '#/components/schemas/OfferSimple'
+        - type: object
+          properties:
+            description:
+              type: string
+            photos:
+              type: array
+              items:
+                type: string
+              minItems: 6
+              maxItems: 6
+            roomsCount:
+              type: integer
+              minimum: 1
+              maximum: 8
+            guestsCount:
+              type: integer
+              minimum: 1
+              maximum: 10
+            features:
+              type: array
+              items:
+                type: string
+            author:
+              $ref: '#/components/schemas/User'
+            location:
+              $ref: '#/components/schemas/Location'
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+          minLength: 5
+          maxLength: 1024
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        author:
+          $ref: '#/components/schemas/User'
+        publishedAt:
+          type: string
+          format: date-time
+
+    Login:
+      type: object
+      required: [ email, password ]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+
+    City:
+      type: string
+      enum:
+        - Paris
+        - Cologne
+        - Brussels
+        - Amsterdam
+        - Hamburg
+        - Dusseldorf
+
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
