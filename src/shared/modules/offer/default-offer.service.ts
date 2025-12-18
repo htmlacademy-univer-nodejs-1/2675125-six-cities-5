@@ -6,13 +6,14 @@ import {DocumentType, types} from '@typegoose/typegoose';
 import {OfferEntity} from './offer.entity.js';
 import {CreateOfferDto} from './dto/create-offer.dto.js';
 import {Types} from 'mongoose';
+import {FavoriteEntity} from './favorite.entity';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
-    @inject(Component.FavoriteModel) private readonly favoriteModel: types.ModelType<OfferEntity>,
+    @inject(Component.FavoriteModel) private readonly favoriteModel: types.ModelType<FavoriteEntity>,
   ) {
   }
 
