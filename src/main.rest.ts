@@ -18,3 +18,5 @@ async function bootstrap() {
   const application = appContainer.get<RestApplication>(Component.RestApplication);
   await application.init();
 }
+
+bootstrap();

@@ -1,4 +1,4 @@
-import {Location, Offer, User} from '../types';
+import {CityName, Location, Offer, User} from '../types';
 import {OfferType} from '../types/offer-type.enum';
 import {Feature} from '../types/feature.type';
 import {UserType} from '../types/user-type.enum';
@@ -41,7 +41,7 @@ export function createOffer(offerData: string): Offer {
   };
 
   const city: City = {
-    name: cityName,
+    name: cityName as CityName,
     latitude: Number(cityLatitude),
     longitude: Number(cityLongitude),
   };
