@@ -15,8 +15,8 @@ export type Offer = {
   isFavorite: boolean;
   rating: number;
   type: OfferType;
-  roomsCount: number;
-  guestsCount: number;
+  rooms: number;
+  guests: number;
   price: number;
   features: Feature[];
   user: User;

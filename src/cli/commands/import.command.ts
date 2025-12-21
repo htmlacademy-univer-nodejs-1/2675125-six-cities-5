@@ -7,17 +7,18 @@ import { DefaultOfferService, OfferModel, OfferService } from '../../shared/modu
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client';
 import { Logger, PinoLogger } from '../../shared/libs/logger';
 import { DefaultUserService, UserModel } from '../../shared/modules/user';
-import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { Offer } from '../../shared/types';
-import {FavoriteModel} from '../../shared/modules/offer/favorite.entity';
+import {FavoriteModel} from '../../shared/modules/offer';
 import {CommentModel} from '../../shared/modules/comment';
+import {RestConfig} from '../../shared/libs/config';
 
 export class ImportCommand implements Command {
   private userService: UserService;
   private offerService: OfferService;
   private databaseClient: DatabaseClient;
   private logger: Logger;
-  private salt: string;
+  private config: RestConfig;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
@@ -27,6 +28,7 @@ export class ImportCommand implements Command {
     this.offerService = new DefaultOfferService(this.logger, OfferModel, FavoriteModel, CommentModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
+    this.config = new RestConfig(this.logger);
   }
 
   private async onImportedLine(line: string, resolve: () => void) {
@@ -44,7 +46,7 @@ export class ImportCommand implements Command {
     const user = await this.userService.findOrCreate({
       ...offer.user,
       password: DEFAULT_USER_PASSWORD,
-    }, this.salt);
+    }, this.config.get('SALT'));
 
     await this.offerService.createOffer({
       userId: user.id,
@@ -56,8 +58,8 @@ export class ImportCommand implements Command {
       type: offer.type,
       city: offer.city.name,
       isPremium: offer.isPremium,
-      guestsCount: offer.guestsCount,
-      roomsCount: offer.roomsCount,
+      guests: offer.guests,
+      rooms: offer.rooms,
       photos: offer.photos,
       features: offer.features,
       location: offer.location,
@@ -68,10 +70,8 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
-    const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
-    this.salt = salt;
-
+  public async execute(filename: string): Promise<void> {
+    const uri = getMongoURI(this.config.get('DB_USER'), this.config.get('DB_PASSWORD'), this.config.get('DB_HOST'), this.config.get('DB_PORT'), this.config.get('DB_NAME'));
     await this.databaseClient.connect(uri);
 
     const fileReader = new TSVFileReader(filename.trim());
