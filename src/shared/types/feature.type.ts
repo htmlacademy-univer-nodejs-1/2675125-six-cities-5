@@ -1,4 +1,4 @@
-export enum Feature {
+export enum FeatureEnum {
   Breakfast = 'Breakfast',
   AirConditioning = 'Air conditioning',
   LaptopFriendlyWorkspace = 'Laptop friendly workspace',
@@ -7,3 +7,5 @@ export enum Feature {
   Towels = 'Towels',
   Fridge = 'Fridge'
 }
+
+export type Feature = keyof typeof FeatureEnum;

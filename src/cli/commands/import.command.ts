@@ -1,15 +1,16 @@
 
 import { Command } from './command.interface.js';
-import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
-import { createOffer, getErrorMessage, getMongoURI } from '../../shared/helpers/index.js';
+import { TSVFileReader } from '../../shared/libs/file-reader';
+import { createOffer, getErrorMessage, getMongoURI } from '../../shared/helpers';
 import { UserService } from '../../shared/modules/user/user-service.interface.js';
-import { DefaultOfferService, OfferModel, OfferService } from '../../shared/modules/offer/index.js';
-import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
-import { Logger, PinoLogger } from '../../shared/libs/logger/index.js';
-import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
+import { DefaultOfferService, OfferModel, OfferService } from '../../shared/modules/offer';
+import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client';
+import { Logger, PinoLogger } from '../../shared/libs/logger';
+import { DefaultUserService, UserModel } from '../../shared/modules/user';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
-import { Offer } from '../../shared/types/index.js';
+import { Offer } from '../../shared/types';
 import {FavoriteModel} from '../../shared/modules/offer/favorite.entity';
+import {CommentModel} from '../../shared/modules/comment';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -23,7 +24,7 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new PinoLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel, FavoriteModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, FavoriteModel, CommentModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -53,13 +54,10 @@ export class ImportCommand implements Command {
       createdDate: offer.createdDate,
       price: offer.price,
       type: offer.type,
-      rating: offer.rating,
       city: offer.city.name,
-      isFavorite: offer.isFavorite,
       isPremium: offer.isPremium,
       guestsCount: offer.guestsCount,
       roomsCount: offer.roomsCount,
-      commentsCount: 100,
       photos: offer.photos,
       features: offer.features,
       location: offer.location,

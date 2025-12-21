@@ -1,7 +1,7 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
 import {UserEntity} from '../user/index.js';
-import {OfferType} from '../../types/offer-type.enum.js';
-import {Feature} from '../../types/feature.type.js';
+import {OfferType, OfferTypeEnum} from '../../types/offer-type.enum.js';
+import {Feature, FeatureEnum} from '../../types/feature.type.js';
 import {City} from '../../types/city.type.js';
 import {CITIES_LOCATIONS, Location} from '../../types';
 
@@ -84,10 +84,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    enum: OfferType,
+    enum: OfferTypeEnum,
     validate: {
-      validator: (offer: OfferType) => Object.keys(OfferType).includes(offer),
-      message: 'Invalid place type'
+      validator: (offer: OfferType) => Object.keys(OfferTypeEnum).includes(offer),
+      message: 'Invalid place types'
     }
   })
   public type!: OfferType;
@@ -115,11 +115,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    enum: Feature,
+    enum: FeatureEnum,
     type: [String],
     validate: {
-      validator: (features: Feature[]) => features.length > 0 && features.every((a) => Object.keys(Feature).includes(a)),
-      message: 'At least one amenity must be provided'
+      validator: (features: Feature[]) => features.length > 0 && features.every((a) => Object.keys(FeatureEnum).includes(a)),
+      message: 'At least one feature must be provided'
     }
   })
   public features!: Feature[];

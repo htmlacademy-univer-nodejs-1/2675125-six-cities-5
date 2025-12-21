@@ -1,6 +1,16 @@
 import {Location} from './location.type';
 
-export type CityName = 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf';
+export enum CityNameEnum {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf'
+}
+
+export type CityName = keyof typeof CityNameEnum;
+
 export const CITIES_LOCATIONS: Record<CityName, Location> = {
   Paris: { latitude: 48.85661, longitude: 2.351499 },
   Cologne: { latitude: 50.938361, longitude: 6.959974 },
