@@ -21,6 +21,8 @@ import {ValidateDtoMiddleware} from '../../libs/rest';
 import {AuthService} from '../auth';
 import {PrivateRouteMiddleware} from '../../libs/rest';
 import {LoggedUserRdo} from './rdo/logged-user.rdo';
+import {AnonymousRouteMiddleware} from '../../libs/rest/middleware/anonymous-route.middleware';
+import {CreateUserDto} from './dto/create-user.dto';
 
 @injectable()
 export class UserController extends BaseController {
@@ -36,8 +38,13 @@ export class UserController extends BaseController {
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
-      handler: this.create
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto),
+        new AnonymousRouteMiddleware(),
+      ]
     });
+    this.addRoute({ path: '/status', method: HttpMethod.Get, handler: this.status });
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,

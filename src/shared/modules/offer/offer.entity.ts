@@ -66,7 +66,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({
     required: true,
   })
-  public images!: string[];
+  public photos!: string[];
 
   @prop({ required: true, default: false })
   public isPremium!: boolean;
@@ -86,7 +86,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     required: true,
     enum: OfferTypeEnum,
     validate: {
-      validator: (offer: OfferType) => Object.keys(OfferTypeEnum).includes(offer),
+      validator: (offer: OfferType) => Object.values(OfferTypeEnum).includes(offer as OfferTypeEnum),
       message: 'Invalid place types'
     }
   })

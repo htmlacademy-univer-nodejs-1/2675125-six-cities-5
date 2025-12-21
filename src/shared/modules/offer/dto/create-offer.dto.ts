@@ -1,4 +1,5 @@
 import {
+  ArrayMaxSize, ArrayMinSize,
   IsArray,
   IsBoolean, IsDateString,
   IsEnum,
@@ -7,9 +8,7 @@ import {
   IsString,
   IsUrl, Length,
   Max,
-  MaxLength,
   Min,
-  MinLength,
   ValidateNested
 } from 'class-validator';
 import {Type} from 'class-transformer';
@@ -50,8 +49,8 @@ export class CreateOfferDto {
 
   @IsArray({message: CreateOfferValidationMessage.images.invalidFormat})
   @IsUrl({}, {each: true, message: CreateOfferValidationMessage.images.invalidItems})
-  @MaxLength(6, {message: CreateOfferValidationMessage.images.maxSize})
-  @MinLength(6, {message: CreateOfferValidationMessage.images.minSize})
+  @ArrayMinSize(6)
+  @ArrayMaxSize(6)
   public photos!: string[];
 
   @IsBoolean({message: CreateOfferValidationMessage.isPremium.invalidFormat})
@@ -63,12 +62,12 @@ export class CreateOfferDto {
   @IsInt({message: CreateOfferValidationMessage.rooms.invalidFormat})
   @Min(1, {message: CreateOfferValidationMessage.rooms.minValue})
   @Max(8, {message: CreateOfferValidationMessage.rooms.maxValue})
-  public roomsCount!: number;
+  public rooms!: number;
 
   @IsInt({message: CreateOfferValidationMessage.guests.invalidFormat})
   @Min(1, {message: CreateOfferValidationMessage.guests.minValue})
   @Max(10, {message: CreateOfferValidationMessage.guests.maxValue})
-  public guestsCount!: number;
+  public guests!: number;
 
   @IsInt({message: CreateOfferValidationMessage.price.invalidFormat})
   @Min(100, {message: CreateOfferValidationMessage.price.minValue})

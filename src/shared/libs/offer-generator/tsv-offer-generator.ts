@@ -3,6 +3,7 @@ import {OfferGenerator} from './offer-generator.interface.js';
 import {MockServerData} from '../../types';
 import {generateRandomValue, getRandomItem, getRandomItems} from '../../helpers';
 import {UserTypeEnum} from '../../types/user-type.enum';
+import {OfferTypeEnum} from '../../types/offer-type.enum';
 
 const MIN_PRICE = 100;
 const MAX_PRICE = 10000;
@@ -11,7 +12,7 @@ const MIN_RATING = 1;
 const MAX_RATING = 5;
 
 const MIN_ROOMS_COUNT = 1;
-const MAX_ROOMS_COUNT = 10;
+const MAX_ROOMS_COUNT = 8;
 
 const MIN_GUESTS_COUNT = 1;
 const MAX_GUESTS_COUNT = 10;
@@ -43,11 +44,11 @@ export class TSVOfferGenerator implements OfferGenerator {
     const isPremium = getRandomItem<boolean>([true, false]);
     const isFavorite = getRandomItem<boolean>([true, false]);
     const rating = generateRandomValue(MIN_RATING, MAX_RATING);
-    const type = getRandomItem(this.mockData.types);
-    const roomsCount = generateRandomValue(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT);
-    const guestsCount = generateRandomValue(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT);
+    const type = getRandomItem(Object.values(OfferTypeEnum));
+    const rooms = generateRandomValue(MIN_ROOMS_COUNT, MAX_ROOMS_COUNT);
+    const guests = generateRandomValue(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT);
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();
-    const features = getRandomItems(this.mockData.features);
+    const features = getRandomItems(this.mockData.features).join(';');
     const userName = getRandomItem(this.mockData.userNames);
     const userEmail = getRandomItem(this.mockData.userEmails);
     const userAvatar = getRandomItem(this.mockData.userAvatars);
@@ -70,8 +71,8 @@ export class TSVOfferGenerator implements OfferGenerator {
       isFavorite,
       rating,
       type,
-      roomsCount,
-      guestsCount,
+      rooms,
+      guests,
       price,
       features,
       userName,

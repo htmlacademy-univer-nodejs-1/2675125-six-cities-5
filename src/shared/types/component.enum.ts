@@ -16,4 +16,5 @@ export const Component = {
   UserController: Symbol.for('UserController'),
   AuthService: Symbol.for('AuthService'),
   AuthExceptionFilter: Symbol.for('AuthExceptionFilter'),
+  HttpExceptionFilter: Symbol.for('HttpExceptionFilter'),
 } as const;

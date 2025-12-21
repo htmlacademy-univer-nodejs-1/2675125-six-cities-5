@@ -1,113 +1,112 @@
 {
-    "api": {
-      "titles": [
-        "title1",
-        "title2",
-        "title3",
-        "title4",
-        "title5",
-        "title6",
-        "title7",
-        "title8",
-        "title9",
-        "title10"
-      ],
-      "descriptions": [
-        "Very very good offer description 1",
-        "Very very good offer description 2",
-        "Very very good offer description 3",
-        "Very very good offer description 4",
-        "Very very good offer description 5",
-        "Very very good offer description 6",
-        "Very very good offer description 7",
-        "Very very good offer description 8",
-        "Very very good offer description 9",
-        "Very very good offer description 10"
-      ],
-      "cities": [
-        "Paris",
-        "Cologne",
-        "Brussels",
-        "Amsterdam",
-        "Hamburg",
-        "Dusseldorf"
-      ],
-      "images": [
-        "photo1.jpg",
-        "photo2.jpg",
-        "photo3.jpg",
-        "photo4.jpg",
-        "photo5.jpg",
-        "photo6.jpg",
-        "photo7.jpg",
-        "photo8.jpg",
-        "photo9.jpg",
-        "photo10.jpg"
-      ],
-      "types": [
-        "apartment",
-        "house",
-        "room",
-        "hotel"
-      ],
-      "features": [
-        "Breakfast",
-        "Air conditioning",
-        "Laptop friendly workspace",
-        "Baby seat",
-        "Washer",
-        "Towels",
-        "Fridge"
-      ],
-      "userNames": [
-        "name1",
-        "name2",
-        "name3",
-        "name4",
-        "name5",
-        "name6",
-        "name7",
-        "name8",
-        "name9",
-        "name10"
-      ],
-      "userEmails": [
-        "email1@example.com",
-        "email2@example.com",
-        "email3@example.com",
-        "email4@example.com",
-        "email5@example.com",
-        "email6@example.com",
-        "email7@example.com",
-        "email8@example.com",
-        "email9@example.com",
-        "email10@example.com"
-      ],
-      "userAvatars": [
-        "avatar1.jpg",
-        "avatar2.jpg",
-        "avatar3.jpg",
-        "avatar4.jpg",
-        "avatar5.jpg",
-        "avatar6.jpg",
-        "avatar7.jpg",
-        "avatar8.jpg",
-        "avatar9.jpg",
-        "avatar10.jpg",
-        "avatar11.jpg",
-        "avatar12.jpg"
-      ],
-      "userPasswords": [
-        "password1",
-        "password2",
-        "password3",
-        "password4",
-        "password5",
-        "password6",
-        "password7",
-        "password8",
-        "password9",
-        "password10"
-      ]
-    }
+  "api": {
+    "titles": [
+      "Elegant townhouse with garden terrace",
+      "Minimalist apartment steps from the river",
+      "Spacious family home with garage",
+      "Artistic loft in a creative neighborhood",
+      "Budget-friendly room close to downtown",
+      "Boutique hotel suite with balcony view",
+      "Renovated villa near vineyards",
+      "Trendy studio ideal for short stays"
+    ],
+    "descriptions": [
+      "Enjoy city life in this elegant townhouse featuring a private terrace and modern decor.",
+      "A sleek, minimalist apartment with serene river views and plenty of natural light.",
+      "Perfect for families — this large home includes multiple bedrooms, a garage, and a backyard.",
+      "Stay inspired in this loft surrounded by galleries, cafés, and creative spaces.",
+      "A smart choice for budget travelers, offering comfort and a central location.",
+      "Relax in style in this boutique hotel room with designer furnishings and a stunning balcony.",
+      "Unwind in this charming countryside villa surrounded by nature and wine country.",
+      "Compact yet stylish studio designed for comfort and convenience during short trips."
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "images": [
+      "photo-1.jpg",
+      "photo-2.jpg",
+      "photo-3.jpg",
+      "photo-4.jpg",
+      "photo-5.jpg",
+      "photo-6.jpg",
+      "photo-7.jpg",
+      "photo-8.jpg",
+      "photo-9.jpg",
+      "photo-10.jpg"
+    ],
+    "types": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "features": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "userNames": [
+      "Laura",
+      "Thomas",
+      "Isabelle",
+      "Max",
+      "Clara",
+      "Felix",
+      "Nora",
+      "Leo",
+      "Hannah",
+      "Julian"
+    ],
+    "userEmails": [
+      "laura@example.com",
+      "thomas@example.com",
+      "isabelle@example.com",
+      "max@example.com",
+      "clara@example.com",
+      "felix@example.com",
+      "nora@example.com",
+      "leo@example.com",
+      "hannah@example.com",
+      "julian@example.com"
+    ],
+    "userAvatars": [
+      "avatar-1.jpg",
+      "avatar-2.jpg",
+      "avatar-3.jpg",
+      "avatar-4.jpg",
+      "avatar-5.jpg",
+      "avatar-6.jpg",
+      "avatar-7.jpg",
+      "avatar-8.jpg",
+      "avatar-9.jpg",
+      "avatar-10.jpg",
+      "avatar-11.jpg",
+      "avatar-12.jpg"
+    ],
+    "userPasswords": [
+      "LauraStaySafe#9",
+      "ThomasPass2024!",
+      "IzzySecure88$",
+      "MaxSpeed_321",
+      "ClaraSunshine44*",
+      "FelixTheFixer99",
+      "NoraNight!12",
+      "LeoLionKing77@",
+      "HannahHome!88",
+      "JulianCodeSecure#1"
+    ],
+    "userTypes": [
+      "pro", "обычный"
+    ]
+  }
 }

@@ -1,6 +1,6 @@
 import {CityName, Location, Offer, User} from '../types';
 import {OfferType} from '../types/offer-type.enum';
-import {Feature} from '../types/feature.type';
+import {FeatureEnum} from '../types/feature.type';
 import {UserType} from '../types/user-type.enum';
 import {City} from '../types/city.type';
 
@@ -18,8 +18,8 @@ export function createOffer(offerData: string): Offer {
     isFavorite,
     rating,
     type,
-    roomsCount,
-    guestsCount,
+    rooms,
+    guests,
     price,
     features,
     userName,
@@ -51,6 +51,13 @@ export function createOffer(offerData: string): Offer {
     longitude: Number(longitude)
   };
 
+  const featuresArray = features.split(';')
+    .filter((feature) => feature.trim() !== '')
+    .map((feature) => feature.trim() as keyof typeof FeatureEnum)
+    .filter((feature) =>
+      Object.keys(FeatureEnum).includes(feature)
+    );
+
   return {
     title,
     description,
@@ -62,10 +69,10 @@ export function createOffer(offerData: string): Offer {
     isFavorite: isFavorite === 'true',
     rating: Number(rating),
     type: type as OfferType,
-    roomsCount: Number(roomsCount),
-    guestsCount: Number(guestsCount),
+    rooms: Number(rooms),
+    guests: Number(guests),
     price: Number.parseInt(price, 10),
-    features: features.split(';') as Feature[],
+    features: featuresArray,
     user: user,
     commentsCount: Number(commentsCount),
     location

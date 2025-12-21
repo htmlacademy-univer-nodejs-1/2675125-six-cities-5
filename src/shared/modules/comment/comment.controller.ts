@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { Response } from 'express';
+import {Response} from 'express';
 import { StatusCodes } from 'http-status-codes';
-import {BaseController, HttpError, HttpMethod, ValidateDtoMiddleware} from '../../libs/rest/index.js';
+import {BaseController, HttpError, HttpMethod, ValidateDtoMiddleware} from '../../libs/rest';
 import { Component } from '../../types';
 import { Logger } from '../../libs/logger';
 import { CommentService } from './comment-service.interface.js';
@@ -47,7 +47,6 @@ export default class CommentController extends BaseController {
     }
 
     const comment = await this.commentService.createComment(body);
-    await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentRdo, comment));
   }
 }
