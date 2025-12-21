@@ -1,0 +1,13 @@
+## Отправить изображение
+
+POST http://localhost:4000/users/62823cb2c5a64ce9f1b50eb6/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="picture.png"
+Content-Type: image/png
+
+< /Users/Ivan/Desktop/picture.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+##
