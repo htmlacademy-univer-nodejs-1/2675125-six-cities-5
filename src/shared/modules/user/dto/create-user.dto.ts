@@ -15,7 +15,7 @@ export class CreateUserDto {
   @Matches(/\.(jpg|png)$/i, {
     message: CreateUserValidationMessage.avatarPath.invalidExtension
   })
-  public avatarPath?: string;
+  public avatarPath!: string;
 
   @IsString({ message: CreateUserValidationMessage.password.invalidFormat })
   @Length(6, 12, { message: CreateUserValidationMessage.password.length })
