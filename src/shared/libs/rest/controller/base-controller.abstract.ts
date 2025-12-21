@@ -51,4 +51,12 @@ export abstract class BaseController implements Controller {
   public ok<T>(res: Response, data: T): void {
     this.send(res, StatusCodes.OK, data);
   }
+
+  public badRequest<T>(res: Response, data: T): void {
+    this.send(res, StatusCodes.BAD_REQUEST, data);
+  }
+
+  public forbidden<T>(res: Response, data: T): void {
+    this.send(res, StatusCodes.FORBIDDEN, data);
+  }
 }

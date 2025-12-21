@@ -1,17 +1,18 @@
-import { UserService } from './user-service.interface.js';
-import { DocumentType, types } from '@typegoose/typegoose';
-import { UserEntity } from './user.entity.js';
-import { CreateUserDto } from './dto/create-user.dto.js';
-import { inject, injectable } from 'inversify';
-import { Component } from '../../types/index.js';
-import { Logger } from '../../libs/logger/index.js';
+import {UserService} from './user-service.interface.js';
+import {DocumentType, types} from '@typegoose/typegoose';
+import {UserEntity} from './user.entity.js';
+import {CreateUserDto} from './dto/create-user.dto.js';
+import {inject, injectable} from 'inversify';
+import {Component} from '../../types/index.js';
+import {Logger} from '../../libs/logger/index.js';
 
 @injectable()
 export class DefaultUserService implements UserService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
-  ) { }
+  ) {
+  }
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const user = new UserEntity(dto);
@@ -24,7 +25,7 @@ export class DefaultUserService implements UserService {
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findOne({ email });
+    return this.userModel.findOne({email});
   }
 
   public async findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
@@ -35,5 +36,11 @@ export class DefaultUserService implements UserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async updateAvatar(userId: string, avatarPath: string): Promise<UserEntity | null> {
+    const user = await this.userModel.findByIdAndUpdate(userId, {$set: {avatarPath: avatarPath},}, {new: true});
+    this.logger.info(`Avatar of user ${userId} was updated`);
+    return user;
   }
 }

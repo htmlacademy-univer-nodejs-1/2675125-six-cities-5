@@ -22,22 +22,22 @@ export function createOffer(offerData: string): Offer {
     guestsCount,
     price,
     features,
-    authorName,
-    authorEmail,
-    authorAvatar,
-    authorPassword,
-    authorType,
+    userName,
+    userEmail,
+    userAvatar,
+    userPassword,
+    userType,
     commentsCount,
     latitude,
     longitude
   ] = offerData.replace('\n', '').split('\t');
 
-  const author: User = {
-    name: authorName,
-    email: authorEmail,
-    type: authorType as UserType,
-    avatarPath: authorAvatar,
-    password: authorPassword
+  const user: User = {
+    name: userName,
+    email: userEmail,
+    type: userType as UserType,
+    avatarPath: userAvatar,
+    password: userPassword
   };
 
   const city: City = {
@@ -66,7 +66,7 @@ export function createOffer(offerData: string): Offer {
     guestsCount: Number(guestsCount),
     price: Number.parseInt(price, 10),
     features: features.split(';') as Feature[],
-    author,
+    user: user,
     commentsCount: Number(commentsCount),
     location
   };

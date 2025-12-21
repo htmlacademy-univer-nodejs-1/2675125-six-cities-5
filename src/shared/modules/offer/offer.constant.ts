@@ -1,0 +1,2 @@
+export const DEFAULT_OFFERS_LIMIT = 60;
+export const DEFAULT_PREMIUM_CITY_OFFERS_LIMIT = 3;

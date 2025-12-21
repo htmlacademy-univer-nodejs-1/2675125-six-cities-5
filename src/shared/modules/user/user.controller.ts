@@ -18,7 +18,9 @@ import {UserRdo} from './rdo/user.rdo.js';
 import {LoginUserRequest} from './login-user-request.type.js';
 import {LoginUserDto} from './dto/login-user.dto';
 import {ValidateDtoMiddleware} from '../../libs/rest';
-import {CreateUserDto} from './dto/create-user.dto';
+import {AuthService} from '../auth';
+import {PrivateRouteMiddleware} from '../../libs/rest';
+import {LoggedUserRdo} from './rdo/logged-user.rdo';
 
 @injectable()
 export class UserController extends BaseController {
@@ -26,15 +28,15 @@ export class UserController extends BaseController {
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.UserService) private readonly userService: UserService,
     @inject(Component.Config) private readonly configService: Config<RestSchema>,
+    @inject(Component.AuthService) private readonly authService: AuthService
   ) {
     super(logger);
     this.logger.info('Register routes for UserController…');
 
     this.addRoute({
-      path: '/register',
+      path: '/',
       method: HttpMethod.Post,
-      handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateUserDto)]
+      handler: this.create
     });
     this.addRoute({
       path: '/login',
@@ -43,10 +45,11 @@ export class UserController extends BaseController {
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
     });
     this.addRoute({
-      path: '/:userId/avatar',
+      path: '/avatar',
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('userId'),
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
       ]
@@ -71,30 +74,39 @@ export class UserController extends BaseController {
     this.created(res, fillDTO(UserRdo, result));
   }
 
-  public async login(
-    {body}: LoginUserRequest,
-    _res: Response,
-  ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+  public async login({body}: LoginUserRequest, res: Response): Promise<void> {
+    const user = await this.authService.verify(body);
+    const token = await this.authService.authenticate(user);
+    const responseData = fillDTO(LoggedUserRdo, {
+      email: user.email,
+      token,
+    });
+    this.ok(res, responseData);
+  }
 
-    if (!existsUser) {
+  public async status({tokenPayload: {email}}: Request, res: Response): Promise<void> {
+    const foundUser = await this.userService.findByEmail(email);
+
+    if (!foundUser) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} not found.`,
-        'UserController',
+        'Unauthorized',
+        'UserController'
       );
     }
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
-    );
+    this.ok(res, fillDTO(LoggedUserRdo, foundUser));
   }
 
-  public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
+  public async uploadAvatar({ file, tokenPayload }: Request, res: Response
+  ): Promise<void> {
+    if (!file) {
+      res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
+      return;
+    }
+
+    const updatedUser = await this.userService.updateAvatar(tokenPayload.id, `/static/${file.filename}`);
+
+    res.status(StatusCodes.CREATED).json({ avatarUrl: updatedUser?.avatarPath || '/static/default-avatar-picture.png' });
   }
 }

@@ -1,6 +1,6 @@
 import {inject, injectable} from 'inversify';
 import {OfferService} from './offer-service.interface.js';
-import {Component} from '../../types';
+import {CityName, Component, DESCENDING_ORDER} from '../../types';
 import {Logger} from '../../libs/logger';
 import {DocumentType, types} from '@typegoose/typegoose';
 import {OfferEntity} from './offer.entity.js';
@@ -9,6 +9,7 @@ import {Types} from 'mongoose';
 import {FavoriteEntity} from './favorite.entity';
 import {CommentEntity} from '../comment';
 import {UpdateOfferDto} from './dto/update-offer.dto';
+import {DEFAULT_OFFERS_LIMIT, DEFAULT_PREMIUM_CITY_OFFERS_LIMIT} from './offer.constant';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -31,29 +32,30 @@ export class DefaultOfferService implements OfferService {
     return result;
   }
 
-  public async getAllOffers(): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
+  public async getOffers(limit?: number, userId?: string): Promise<DocumentType<OfferEntity>[]> {
+    const offers = await this.offerModel
       .find()
-      .limit(60)
-      .sort({postDate: -1});
+      .limit(limit ?? DEFAULT_OFFERS_LIMIT)
+      .sort({ createdAt: DESCENDING_ORDER });
+    return this.joinUserFavorites(offers, userId);
   }
 
-  public async getOfferById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async getOfferById(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null> {
+    const isFavorite = userId !== undefined && await this.favoriteModel.findOne({offerId, userId}) !== null;
+
     const offer = await this.offerModel
       .findById(offerId)
-      .populate('authorId')
-      .exec();
+      .populate('userId');
 
-    if (!offer) {
-      this.logger.info(`Offer ${offerId} was not found`);
-      return null;
+    if (offer !== null) {
+      offer.isFavorite = isFavorite;
     }
 
     return offer;
   }
 
   public async updateOfferById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
-    const result = this.offerModel.findByIdAndUpdate(offerId, { $set: dto, }, { new: true });
+    const result = await this.offerModel.findByIdAndUpdate(offerId, { $set: dto, }, { new: true });
     this.logger.info(`Offer ${offerId} was updated`);
     return result;
   }
@@ -113,38 +115,56 @@ export class DefaultOfferService implements OfferService {
         {rating: parseFloat(newRating.toFixed(1))},
         {new: true}
       )
-      .populate('authorId')
+      .populate('userId')
       .exec();
   }
 
-  public async getPremiumOffersByCity(cityName: string): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
-      .find({cityName, isPremium: true})
-      .limit(3)
-      .sort({postDate: -1})
-      .populate('authorId');
+  public async getPremiumOffersByCity(city: CityName, userId?: string): Promise<DocumentType<OfferEntity>[]> {
+    const offers = await this.offerModel
+      .find({ city, isPremium: true })
+      .limit(DEFAULT_PREMIUM_CITY_OFFERS_LIMIT)
+      .sort({ createdAt: DESCENDING_ORDER });
+
+    return this.joinUserFavorites(offers, userId);
   }
 
   public async getFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-    return this.favoriteModel
-      .find({userId,})
-      .populate('offerId');
+    const favorites = await this.favoriteModel.find({ userId });
+    const offerIds = favorites.map((fav) => fav.offerId as Types.ObjectId);
+
+    return await this.offerModel.find({ _id: { $in: offerIds } });
   }
 
-  public async addToFavorite(offerId: string, userId: string): Promise<null> {
-    await this.favoriteModel.create({offerId, userId});
+  public async addToFavorite(offerId: string, userId: string): Promise<DocumentType<FavoriteEntity> | null> {
+    const existing = await this.favoriteModel.findOne({ offerId, userId });
+
+    if (existing !== null) {
+      return null;
+    }
 
     this.logger.info(`User ${userId} added offer ${offerId} to favorites`);
 
-    return null;
+    return this.favoriteModel.create({ offerId, userId });
   }
 
-  public async removeFromFavorite(offerId: string, userId: string): Promise<null> {
-    await this.favoriteModel.findOneAndRemove({offerId, userId});
-
+  public async removeFromFavorite(offerId: string, userId: string): Promise<DocumentType<FavoriteEntity> | null> {
+    const deleted = await this.favoriteModel.findOneAndRemove({ offerId, userId });
     this.logger.info(`User ${userId} removed offer ${offerId} from favorites`);
+    return deleted;
+  }
 
-    return null;
+  private async joinUserFavorites(offers: DocumentType<OfferEntity>[], userId?: string) : Promise<DocumentType<OfferEntity>[]> {
+    let favoriteOfferIds = new Set<string>();
+
+    if (userId) {
+      const favorites = await this.favoriteModel.find({ userId: new Types.ObjectId(userId) }).select('offerId');
+      favoriteOfferIds = new Set(favorites.map((f) => f.offerId.toString()));
+    }
+
+    return offers.map((offer) => {
+      offer.isFavorite = favoriteOfferIds.has(offer._id.toString());
+      return offer;
+    });
   }
 }
 

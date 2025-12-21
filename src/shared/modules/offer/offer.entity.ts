@@ -128,7 +128,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     required: true,
     ref: UserEntity
   })
-  public authorId!: Ref<UserEntity>;
+  public userId!: Ref<UserEntity>;
 
   @prop({
     required: true,
