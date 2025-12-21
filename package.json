@@ -25,6 +25,8 @@
     "@types/node": "18.16.3",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
+    "@types/mime-types": "2.1.2",
+    "@types/multer": "1.4.8",
     "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
     "eslint": "8.39.0",
@@ -54,6 +56,9 @@
     "http-status-codes": "^2.3.0",
     "mongoose": "^7.6.0",
     "pino": "^10.1.0",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "class-validator": "0.14.1",
+    "multer": "1.4.5-lts.1",
+    "mime-types": "2.1.35"
   }
 }

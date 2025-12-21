@@ -1,7 +1,7 @@
 import { defaultClasses, getModelForClass, prop, modelOptions } from '@typegoose/typegoose';
 import { User } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
-import {UserType} from '../../types/user-type.enum.js';
+import {UserType, UserTypeEnum} from '../../types/user-type.enum.js';
 
 export interface UserEntity extends defaultClasses.Base {}
 
@@ -21,7 +21,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: false, default: '' })
   public avatarPath?: string;
 
-  @prop({ required: true, default: UserType.Default })
+  @prop({ required: true, default: UserTypeEnum.Default })
   public type: UserType;
 
   @prop({ required: true, default: '' })

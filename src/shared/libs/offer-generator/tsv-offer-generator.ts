@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import {OfferGenerator} from './offer-generator.interface.js';
 import {MockServerData} from '../../types';
 import {generateRandomValue, getRandomItem, getRandomItems} from '../../helpers';
-import {UserType} from '../../types/user-type.enum';
+import {UserTypeEnum} from '../../types/user-type.enum';
 
 const MIN_PRICE = 100;
 const MAX_PRICE = 10000;
@@ -52,7 +52,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const authorEmail = getRandomItem(this.mockData.userEmails);
     const authorAvatar = getRandomItem(this.mockData.userAvatars);
     const authorPassword = getRandomItem(this.mockData.userPasswords);
-    const authorType = getRandomItem(Object.keys(UserType));
+    const authorType = getRandomItem(Object.keys(UserTypeEnum));
     const commentsCount = generateRandomValue(MIN_COMMENTS_COUNT, MAX_COMMENTS_COUNT);
     const latitude = generateRandomValue(MIN_COORDINATES, MAX_COORDINATES, 5);
     const longitude = generateRandomValue(MIN_COORDINATES, MAX_COORDINATES, 5);
