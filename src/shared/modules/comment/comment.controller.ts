@@ -2,14 +2,15 @@ import { inject, injectable } from 'inversify';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {BaseController, HttpError, HttpMethod, ValidateDtoMiddleware} from '../../libs/rest/index.js';
-import { Component } from '../../types/index.js';
-import { Logger } from '../../libs/logger/index.js';
+import { Component } from '../../types';
+import { Logger } from '../../libs/logger';
 import { CommentService } from './comment-service.interface.js';
-import { OfferService } from '../offer/index.js';
-import { fillDTO } from '../../helpers/index.js';
+import { OfferService } from '../offer';
+import { fillDTO } from '../../helpers';
 import { CommentRdo } from './rdo/comment.rdo.js';
 import {CreateCommentDto} from './dto/create-comment.dto.js';
 import {CreateCommentRequest} from './types/create-comment-request.type';
+import {PrivateRouteMiddleware} from '../../libs/rest';
 
 @injectable()
 export default class CommentController extends BaseController {
@@ -26,6 +27,7 @@ export default class CommentController extends BaseController {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateCommentDto)
       ]
     });
@@ -44,7 +46,7 @@ export default class CommentController extends BaseController {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.createComment(body);
     await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentRdo, comment));
   }

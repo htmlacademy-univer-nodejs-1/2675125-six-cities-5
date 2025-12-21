@@ -46,7 +46,7 @@ export const CreateOfferValidationMessage = {
     invalidFormat: 'Features must be an array',
     invalidItems: 'Each feature must be one of: Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge',
   },
-  authorId: {
+  userId: {
     invalidFormat: 'Author ID must be a string',
   },
   location: {

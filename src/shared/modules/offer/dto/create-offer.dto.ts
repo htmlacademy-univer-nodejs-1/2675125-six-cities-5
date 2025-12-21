@@ -3,9 +3,9 @@ import {
   IsBoolean, IsDateString,
   IsEnum,
   IsInt,
-  IsNumber,
+  IsNumber, IsOptional,
   IsString,
-  IsUrl,
+  IsUrl, Length,
   Max,
   MaxLength,
   Min,
@@ -32,13 +32,11 @@ export class LocationDto {
 
 export class CreateOfferDto {
   @IsString({message: CreateOfferValidationMessage.title.invalidFormat})
-  @MinLength(10, {message: CreateOfferValidationMessage.title.minLength})
-  @MaxLength(100, {message: CreateOfferValidationMessage.title.maxLength})
+  @Length(10, 100)
   public title!: string;
 
   @IsString({message: CreateOfferValidationMessage.description.invalidFormat})
-  @MinLength(20, {message: CreateOfferValidationMessage.description.minLength})
-  @MaxLength(1024, {message: CreateOfferValidationMessage.description.maxLength})
+  @Length(20, 1024)
   public description!: string;
 
   @IsEnum(CityNameEnum, {message: CreateOfferValidationMessage.city.invalid})
@@ -81,8 +79,9 @@ export class CreateOfferDto {
   @IsEnum(FeatureEnum, {each: true, message: CreateOfferValidationMessage.features.invalidItems})
   public features!: Feature[];
 
-  @IsString({message: CreateOfferValidationMessage.authorId.invalidFormat})
-  public authorId!: string;
+  @IsOptional()
+  @IsString({message: CreateOfferValidationMessage.userId.invalidFormat})
+  public userId!: string;
 
   @ValidateNested()
   @Type(() => LocationDto)

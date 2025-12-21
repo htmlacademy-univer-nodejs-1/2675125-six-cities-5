@@ -14,7 +14,7 @@ export class OfferRdo {
   @Expose()
   public description!: string;
 
-  @Expose()
+  @Expose({ name: 'createdAt' })
   public postDate!: Date;
 
   @Expose()
@@ -52,7 +52,7 @@ export class OfferRdo {
 
   @Expose()
   @Type(() => UserRdo)
-  public author!: UserRdo;
+  public user!: UserRdo;
 
   @Expose()
   public commentsCount!: number;

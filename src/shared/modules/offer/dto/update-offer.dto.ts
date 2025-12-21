@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsUrl,
+  IsUrl, Length,
   Max,
   MaxLength,
   Min,
@@ -33,14 +33,12 @@ export class LocationDto {
 export class UpdateOfferDto {
   @IsOptional()
   @IsString({ message: UpdateOfferValidationMessage.title.invalidFormat })
-  @MinLength(10, { message: UpdateOfferValidationMessage.title.minLength })
-  @MaxLength(100, { message: UpdateOfferValidationMessage.title.maxLength })
+  @Length(10, 100)
   public title?: string;
 
   @IsOptional()
   @IsString({ message: UpdateOfferValidationMessage.description.invalidFormat })
-  @MinLength(20, { message: UpdateOfferValidationMessage.description.minLength })
-  @MaxLength(1024, { message: UpdateOfferValidationMessage.description.maxLength })
+  @Length(20, 1024)
   public description?: string;
 
   @IsOptional()

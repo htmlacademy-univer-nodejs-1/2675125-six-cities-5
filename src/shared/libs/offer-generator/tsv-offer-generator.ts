@@ -48,11 +48,11 @@ export class TSVOfferGenerator implements OfferGenerator {
     const guestsCount = generateRandomValue(MIN_GUESTS_COUNT, MAX_GUESTS_COUNT);
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();
     const features = getRandomItems(this.mockData.features);
-    const authorName = getRandomItem(this.mockData.userNames);
-    const authorEmail = getRandomItem(this.mockData.userEmails);
-    const authorAvatar = getRandomItem(this.mockData.userAvatars);
-    const authorPassword = getRandomItem(this.mockData.userPasswords);
-    const authorType = getRandomItem(Object.keys(UserTypeEnum));
+    const userName = getRandomItem(this.mockData.userNames);
+    const userEmail = getRandomItem(this.mockData.userEmails);
+    const userAvatar = getRandomItem(this.mockData.userAvatars);
+    const userPassword = getRandomItem(this.mockData.userPasswords);
+    const userType = getRandomItem(Object.keys(UserTypeEnum));
     const commentsCount = generateRandomValue(MIN_COMMENTS_COUNT, MAX_COMMENTS_COUNT);
     const latitude = generateRandomValue(MIN_COORDINATES, MAX_COORDINATES, 5);
     const longitude = generateRandomValue(MIN_COORDINATES, MAX_COORDINATES, 5);
@@ -74,11 +74,11 @@ export class TSVOfferGenerator implements OfferGenerator {
       guestsCount,
       price,
       features,
-      authorName,
-      authorEmail,
-      authorAvatar,
-      authorPassword,
-      authorType,
+      userName,
+      userEmail,
+      userAvatar,
+      userPassword,
+      userType,
       commentsCount,
       latitude,
       longitude
